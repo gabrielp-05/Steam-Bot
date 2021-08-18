@@ -10,12 +10,6 @@ import discord, os, asyncio, requests
 
 #---------------------------------------------------------#
 
-# chat logger just in case
-def record(author,msg,channel,guild):
-  with open('history.txt','a') as f:
-    f.writelines(str(datetime.now()) + '\n' + str(author) + '\n' + str(guild) + '\n' + str(channel) + '\n' + str(msg) + '\n\n')
-
-
 chrome_options = Options()
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
