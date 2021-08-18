@@ -3,17 +3,11 @@ from discord import Intents
 
 from datetime import datetime
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+
 from keep_alive import keep_alive
 import discord, os, asyncio, requests
 
 #---------------------------------------------------------#
-
-chrome_options = Options()
-chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument('--disable-dev-shm-usage')
-driver = webdriver.Chrome(options=chrome_options)
 # web scraper
 
 def scraper(num, page):
@@ -28,9 +22,8 @@ def scraper(num, page):
   discounts = []
   prices = []
 
-  driver.get(page)
-  content = driver.page_source
-  soup = BeautifulSoup(content, features="html.parser")
+  content = requests.get(page, 'html.parser')
+  soup = BeautifulSoup(content.text, features="html.parser")
 
   for a in soup.findAll('a', attrs = {'class': 'search_result_row'}):
     name = a.find('span', attrs={'class': 'title'})
@@ -66,12 +59,6 @@ async def on_ready():
   await client.change_presence(status=discord.Status.idle)
   print('Bot ready')
 
-@client.event
-async def on_message(message):
-  if message.guild.id != 799615290932461598:
-    record(message.author,message.content,message.channel,message.guild)
-    await client.process_commands(message) # allow commands to run
-
 
 @client.event
 async def on_command_error(ctx, error):
@@ -81,12 +68,13 @@ async def on_command_error(ctx, error):
         return await ctx.send('**Please pass in all required arguments**')
 
 async def load_thread(fetchMessage):
-  await fetchMessage.edit(content='Fetching data from Steam servers.')
-  await asyncio.sleep(0.5)
-  await fetchMessage.edit(content='Fetching data from Steam servers..')
-  await asyncio.sleep(0.5)
-  await fetchMessage.edit(content='Fetching data from Steam servers...')
-  await asyncio.sleep(0.5)
+  msg = 'Fetching data from Steam servers'
+    await fetchMessage.edit(content=msg+'.')
+    await asyncio.sleep(0.5)
+    await fetchMessage.edit(content=msg+'..')
+    await asyncio.sleep(0.5)
+    await fetchMessage.edit(content=msg+'...')
+    await asyncio.sleep(0.5)
 
 
 
@@ -108,10 +96,12 @@ async def sales(ctx, num : int = 20):
     fetchMessage = await ctx.send('Fetching data from Steam servers...')
     await asyncio.ensure_future(load_thread(fetchMessage))
     resultsDict = scraper(num, 'https://store.steampowered.com/search/?specials=1/&cc=UK')
+    
     await fetchMessage.delete()
     await ctx.send('The latest sales on Steam are:')
+    
     await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(*resultsDict.keys()))
-    for row in range(0,num):
+    for row in range(0,len(resultsDict['Products']):
       await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
 
     await ctx.send('A link to this can be found at <https://bit.ly/3k8rqS0>')
@@ -138,7 +128,7 @@ async def search(ctx, num : int, *, term):
     await ctx.send('Your results are:')
 
     await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(*resultsDict.keys()))
-    for row in range(0,num):
+    for row in range(0,len(resultsDict['Products']):
       await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
 
     await ctx.send(f'A link to this can be found at <https://store.steampowered.com/search/?term={term}>')
