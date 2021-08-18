@@ -91,7 +91,7 @@ async def help(ctx):
 @client.command(name='sales')
 async def sales(ctx, num : int = 20):
 
-  if isinstance(num, int) and num in range(1,31):
+  if isinstance(num, int) and num in range(1,25):
     await client.change_presence(status=discord.Status.online)
     fetchMessage = await ctx.send('Fetching data from Steam servers...')
     await asyncio.ensure_future(load_thread(fetchMessage))
@@ -101,21 +101,21 @@ async def sales(ctx, num : int = 20):
     await ctx.send('The latest sales on Steam are:')
     
     await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(*resultsDict.keys()))
-    for row in range(0,len(resultsDict['Products']):
+    for row in range(0,len(resultsDict['Products'])):
       await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
 
     await ctx.send('A link to this can be found at <https://bit.ly/3k8rqS0>')
     await asyncio.sleep(0.5)
     await client.change_presence(status=discord.Status.idle)
   else:
-    await ctx.send('Please enter a valid number of results to fetch, betweem 1 amd 30')
+    await ctx.send('Please enter a valid number of results to fetch, betweem 1 amd 25')
 
 
 # search
 @client.command(name='search')
 async def search(ctx, num : int, *, term):
 
-  if isinstance(num, int) and num in range(1,51):
+  if isinstance(num, int) and num in range(1,25):
     await client.change_presence(status=discord.Status.online)
 
     term = term.replace(' ','+') # replacing spaces with +s so the url can be displayed correctly in Discord
@@ -128,14 +128,14 @@ async def search(ctx, num : int, *, term):
     await ctx.send('Your results are:')
 
     await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(*resultsDict.keys()))
-    for row in range(0,len(resultsDict['Products']):
+    for row in range(0,len(resultsDict['Products'])):
       await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
 
     await ctx.send(f'A link to this can be found at <https://store.steampowered.com/search/?term={term}>')
     await asyncio.sleep(0.5)
     await client.change_presence(status=discord.Status.idle)
   else:
-    await ctx.send('Please enter a valid number of results to fetch, above 0 and below 100')
+    await ctx.send('Please enter a valid number of results to fetch, between 1 and 25')
 
 
 # get reaction for the clear command
