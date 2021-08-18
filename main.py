@@ -180,11 +180,11 @@ async def clear(ctx, amount : int = None):
       await confirmMsg.add_reaction('\N{NO ENTRY SIGN}')
       confirmMsgID = confirmMsg.id
       await asyncio.sleep(0.5)
-      await client.change_presence(status=discord.Status.idle, activity=discord.Streaming(name=statusName, url='https://www.twitch.tv/xephire____'))
+      await client.change_presence(status=discord.Status.idle)
       return
 
     if isinstance(amount, int) and amount > 0:
-      await client.change_presence(status=discord.Status.online, activity=discord.Streaming(name=statusName, url='https://www.twitch.tv/xephire____'))
+      await client.change_presence(status=discord.Status.online)
       await ctx.channel.purge(limit=amount+1)
       delMsg = await ctx.send(f'{amount} messages were deleted')
       await asyncio.sleep(2)
