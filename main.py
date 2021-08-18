@@ -28,7 +28,6 @@ def scraper(num, page):
   When a valid URL is passed in, it opens that page in the Selenium Chromedriver and
   fetches all results in a given range which can be changed
   """
-  # while locally hosted, I close the driver because my pc is faster than the repl.it server
 
   products = []
   releases = []
@@ -70,7 +69,7 @@ statusName = 'The best bot.'
 
 @client.event
 async def on_ready():
-  await client.change_presence(status=discord.Status.idle, activity=discord.Streaming(name=statusName, url='https://www.twitch.tv/xephirehd'))
+  await client.change_presence(status=discord.Status.idle)
   print('Bot ready')
 
 @client.event
@@ -111,7 +110,7 @@ async def help(ctx):
 async def sales(ctx, num : int = 20):
 
   if isinstance(num, int) and num in range(1,31):
-    await client.change_presence(status=discord.Status.online, activity=discord.Streaming(name=statusName, url='https://www.twitch.tv/xephire____'))
+    await client.change_presence(status=discord.Status.online)
     fetchMessage = await ctx.send('Fetching data from Steam servers...')
     await asyncio.ensure_future(load_thread(fetchMessage))
     resultsDict = scraper(num, 'https://store.steampowered.com/search/?specials=1/&cc=UK')
@@ -123,7 +122,7 @@ async def sales(ctx, num : int = 20):
 
     await ctx.send('A link to this can be found at <https://bit.ly/3k8rqS0>')
     await asyncio.sleep(0.5)
-    await client.change_presence(status=discord.Status.idle, activity=discord.Streaming(name=statusName, url='https://www.twitch.tv/xephire____'))
+    await client.change_presence(status=discord.Status.idle)
   else:
     await ctx.send('Please enter a valid number of results to fetch, betweem 1 amd 30')
 
@@ -133,7 +132,7 @@ async def sales(ctx, num : int = 20):
 async def search(ctx, num : int, *, term):
 
   if isinstance(num, int) and num in range(1,51):
-    await client.change_presence(status=discord.Status.online, activity=discord.Streaming(name=statusName, url='https://www.twitch.tv/xephire____'))
+    await client.change_presence(status=discord.Status.online)
 
     term = term.replace(' ','+') # replacing spaces with +s so the url can be displayed correctly in Discord
 
@@ -150,7 +149,7 @@ async def search(ctx, num : int, *, term):
 
     await ctx.send(f'A link to this can be found at <https://store.steampowered.com/search/?term={term}>')
     await asyncio.sleep(0.5)
-    await client.change_presence(status=discord.Status.idle, activity=discord.Streaming(name=statusName, url='https://www.twitch.tv/xephire____'))
+    await client.change_presence(status=discord.Status.idle)
   else:
     await ctx.send('Please enter a valid number of results to fetch, above 0 and below 100')
 
@@ -176,7 +175,7 @@ async def clear(ctx, amount : int = None):
   if role in ctx.message.author.roles:
 
     if amount is None:
-      await client.change_presence(status=discord.Status.online, activity=discord.Streaming(name=statusName, url='https://www.twitch.tv/xephire____'))
+      await client.change_presence(status=discord.Status.online)
       confirmMsg = await ctx.send('React to this message with :no_entry_sign: to confirm clearing the whole text channel. (This message automatically deletes after 5 seconds)', delete_after=5)
       await confirmMsg.add_reaction('\N{NO ENTRY SIGN}')
       confirmMsgID = confirmMsg.id
@@ -191,7 +190,7 @@ async def clear(ctx, amount : int = None):
       await asyncio.sleep(2)
       await delMsg.delete()
       await asyncio.sleep(0.5)
-      await client.change_presence(status=discord.Status.idle, activity=discord.Streaming(name=statusName, url='https://www.twitch.tv/xephire____'))
+      await client.change_presence(status=discord.Status.idle)
     else:
       await ctx.send('Please specify a valid number of messages to delete')
       return
@@ -202,5 +201,5 @@ async def clear(ctx, amount : int = None):
 
 
 keep_alive()
-token = os.environ.get('Token')
+token = os.environ.get('Token') # if copying this code, make sure to have an environment file with a variable named 'Token' with the bot's oauth token as the value in order for it to run.
 client.run(token)
