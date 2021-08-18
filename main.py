@@ -138,52 +138,6 @@ async def search(ctx, num : int, *, term):
     await ctx.send('Please enter a valid number of results to fetch, between 1 and 25')
 
 
-# get reaction for the clear command
-@client.event
-async def on_reaction_add(reaction, user):
-  try: confirmMsgID
-  except NameError: return
-  if reaction.message.id == confirmMsgID and reaction.emoji == '\N{NO ENTRY SIGN}' and user.id != 764782666029465630:
-    await reaction.message.channel.purge(limit=None)
-    await asyncio.sleep(0.5)
-    delMsg = await reaction.message.channel.send('This channel was cleared')
-    await asyncio.sleep(1)
-    await delMsg.delete()
-
-# clear
-@client.command(name='clear')
-async def clear(ctx, amount : int = None):
-  global confirmMsgID
-
-  role = discord.utils.find(lambda r: r.id == 807210359588388864, ctx.message.guild.roles)
-  if role in ctx.message.author.roles:
-
-    if amount is None:
-      await client.change_presence(status=discord.Status.online)
-      confirmMsg = await ctx.send('React to this message with :no_entry_sign: to confirm clearing the whole text channel. (This message automatically deletes after 5 seconds)', delete_after=5)
-      await confirmMsg.add_reaction('\N{NO ENTRY SIGN}')
-      confirmMsgID = confirmMsg.id
-      await asyncio.sleep(0.5)
-      await client.change_presence(status=discord.Status.idle)
-      return
-
-    if isinstance(amount, int) and amount > 0:
-      await client.change_presence(status=discord.Status.online)
-      await ctx.channel.purge(limit=amount+1)
-      delMsg = await ctx.send(f'{amount} messages were deleted')
-      await asyncio.sleep(2)
-      await delMsg.delete()
-      await asyncio.sleep(0.5)
-      await client.change_presence(status=discord.Status.idle)
-    else:
-      await ctx.send('Please specify a valid number of messages to delete')
-      return
-  else:
-    permErrorMsg = await ctx.send('You do not have permission to use this command')
-    await asyncio.sleep(2)
-    await permErrorMsg.delete()
-
-
 keep_alive()
 token = os.environ.get('Token') # if copying this code, make sure to have an environment file with a variable named 'Token' with the bot's oauth token as the value in order for it to run.
 client.run(token)
