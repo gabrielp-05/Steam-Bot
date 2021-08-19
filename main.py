@@ -4,7 +4,7 @@ from discord import Intents
 import numpy as np
 from bs4 import BeautifulSoup
 from keep_alive import keep_alive
-import discord, asyncio, requests, math
+import discord, os, asyncio, requests, math
 
 #---------------------------------------------------------#
 # web scraper
