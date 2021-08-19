@@ -81,9 +81,8 @@ async def load_thread(fetchMessage):
 @client.command(name='help')
 async def help(ctx):
     em = discord.Embed(title='Help', description='A bot that can be used to pull results and sales off the Steam webstore.', colour=discord.Color.dark_blue())
-    em.add_field(name='Sales', value='Allows the user to be returned the sales page from Steam. Syntax: .sales [no. of results]; leave [no. of results] empty to be returned 20 by default')
-    em.add_field(name='Search', value='Allows the user to search for results on Steam. Syntax: .search [no. of results] [search term]')
-    em.add_field(name='Clear', value='Clears text channels. Syntax: .clear [amount]; leave [amount] empty to be prompted to clea the whole channel')
+    em.add_field(name='Sales', value='Allows the user to be returned the sales page from Steam. Syntax: >sales [no. of results]; leave [no. of results] empty to be returned 20 by default')
+    em.add_field(name='Search', value='Allows the user to search for results on Steam. Syntax: >search [no. of results] [search term]')
     await ctx.send(embed = em)
 
 
