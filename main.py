@@ -1,18 +1,15 @@
-from typing import Dict
 from discord.ext import commands
 from discord import Intents
 
-from datetime import datetime
+import numpy as np
 from bs4 import BeautifulSoup
-
 from keep_alive import keep_alive
 import discord, asyncio, requests, math
-import numpy as np
 
 #---------------------------------------------------------#
 # web scraper
 
-def scraper(num, page) -> Dict:
+def scraper(num, page) -> dict:
 
   """
   When a valid URL is passed in, it opens that page in the Selenium Chromedriver and
@@ -159,7 +156,6 @@ async def search(ctx, num : int, *, term):
     await client.change_presence(status=discord.Status.idle)
   else:
     await ctx.send('Please enter a valid number of results to fetch, between 1 and 25')
-
 
 keep_alive()
 token = os.environ.get('Token') # if copying this code, make sure to have an environment file with a variable named 'Token' with the bot's oauth token as the value in order for it to run.
