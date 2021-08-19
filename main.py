@@ -1,3 +1,4 @@
+from typing import Dict
 from discord.ext import commands
 from discord import Intents
 
@@ -5,12 +6,13 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 from keep_alive import keep_alive
-import discord, os, asyncio, requests
+import discord, asyncio, requests, math
+import numpy as np
 
 #---------------------------------------------------------#
 # web scraper
 
-def scraper(num, page):
+def scraper(num, page) -> Dict:
 
   """
   When a valid URL is passed in, it opens that page in the Selenium Chromedriver and
@@ -99,9 +101,20 @@ async def sales(ctx, num : int = 20):
     await fetchMessage.delete()
     await ctx.send('The latest sales on Steam are:')
     
-    await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(*resultsDict.keys()))
+    messageLineList = list()
+    messageLineList.append('`{:<90} {:<15} {:<25} {:<10}`\n'.format(*resultsDict.keys()))
+
     for row in range(0,len(resultsDict['Products'])):
-      await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
+      messageLineList.append('`{:<90} {:<15} {:<25} {:<10}`\n'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
+
+    noOfMessages = math.ceil(sum(len(line) for line in messageLineList)/2000)
+
+    parts = np.array_split(messageLineList,noOfMessages)
+    for part in parts:
+      message = ""
+      for line in part:
+        message += line
+      await ctx.send(message)
 
     await ctx.send('A link to this can be found at <https://bit.ly/3k8rqS0>')
     await asyncio.sleep(0.5)
@@ -126,9 +139,20 @@ async def search(ctx, num : int, *, term):
     await fetchMessage.delete()
     await ctx.send('Your results are:')
 
-    await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(*resultsDict.keys()))
+    messageLineList = list()
+    messageLineList.append('`{:<90} {:<15} {:<25} {:<10}`\n'.format(*resultsDict.keys()))
+
     for row in range(0,len(resultsDict['Products'])):
-      await ctx.send('`{:<90} {:<10} {:<25} {:<10}`'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
+      messageLineList.append('`{:<90} {:<15} {:<25} {:<10}`\n'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
+
+    noOfMessages = math.ceil(sum(len(line) for line in messageLineList)/2000)
+
+    parts = np.array_split(messageLineList,noOfMessages)
+    for part in parts:
+      message = ""
+      for line in part:
+        message += line
+      await ctx.send(message)
 
     await ctx.send(f'A link to this can be found at <https://store.steampowered.com/search/?term={term}>')
     await asyncio.sleep(0.5)
