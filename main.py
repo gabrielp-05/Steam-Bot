@@ -111,7 +111,8 @@ async def sales(ctx, num : int = 20):
       message = ""
       for line in part:
         message += line
-      await ctx.send(message)
+      if len(resultsDict['Products']) > 0: await ctx.send(message)
+      else: await ctx.send('`**No results were returned**`')
 
     await ctx.send('A link to this can be found at <https://bit.ly/3k8rqS0>')
     await asyncio.sleep(0.5)
@@ -149,7 +150,8 @@ async def search(ctx, num : int, *, term):
       message = ""
       for line in part:
         message += line
-      await ctx.send(message)
+      if len(resultsDict['Products']) > 0: await ctx.send(message)
+      else: await ctx.send('`**No results were returned**`')
 
     await ctx.send(f'A link to this can be found at <https://store.steampowered.com/search/?term={term}>')
     await asyncio.sleep(0.5)
