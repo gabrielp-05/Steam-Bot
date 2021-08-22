@@ -35,7 +35,7 @@ def scraper(num, page) -> dict:
 
     try:
       prices.append(price.contents[3].strip())
-    except:
+    except Exception:
       prices.append(price.contents[0].strip())
 
     discounts.append(discount.text.strip())
