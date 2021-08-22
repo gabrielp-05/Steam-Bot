@@ -89,7 +89,7 @@ async def help(ctx):
 @client.command(name='sales')
 async def sales(ctx, num : int = 20):
 
-  if isinstance(num, int) and num in range(1,26):
+  if isinstance(num, int) and num in range(1,51):
     await client.change_presence(status=discord.Status.online)
     fetchMessage = await ctx.send('Fetching data from Steam servers...')
     await asyncio.ensure_future(load_thread(fetchMessage))
@@ -118,14 +118,14 @@ async def sales(ctx, num : int = 20):
     await asyncio.sleep(0.5)
     await client.change_presence(status=discord.Status.idle)
   else:
-    await ctx.send('Please enter a valid number of results to fetch, between 1 and 25')
+    await ctx.send('Please enter a valid number of results to fetch, between 1 and 50')
 
 
 # search
 @client.command(name='search')
 async def search(ctx, num : int, *, term):
 
-  if isinstance(num, int) and num in range(1,26):
+  if isinstance(num, int) and num in range(1,51):
     await client.change_presence(status=discord.Status.online)
 
     term = term.replace(' ','+') # replacing spaces with +s so the url can be displayed correctly in Discord
@@ -157,7 +157,7 @@ async def search(ctx, num : int, *, term):
     await asyncio.sleep(0.5)
     await client.change_presence(status=discord.Status.idle)
   else:
-    await ctx.send('Please enter a valid number of results to fetch, between 1 and 25')
+    await ctx.send('Please enter a valid number of results to fetch, between 1 and 50')
 
 keep_alive()
 token = os.environ.get('Token') # if copying this code, make sure to have an environment file with a variable named 'Token' with the bot's oauth token as the value in order for it to run.
