@@ -9,7 +9,7 @@ import discord, os, asyncio, requests, math
 #---------------------------------------------------------#
 # web scraper
 
-def scraper(num, page) -> dict:
+def get_data(num, page) -> dict:
 
   """
   When a valid URL is passed in, it opens that page in the Selenium Chromedriver and
@@ -35,9 +35,9 @@ def scraper(num, page) -> dict:
 
     try:
       prices.append(price.contents[3].strip())
-    except Exception:
+    except IndexError:
       prices.append(price.contents[0].strip())
-
+      
     discounts.append(discount.text.strip())
 
     if len(prices) == num:
@@ -93,7 +93,7 @@ async def sales(ctx, num : int = 20):
     await client.change_presence(status=discord.Status.online)
     fetchMessage = await ctx.send('Fetching data from Steam servers...')
     await asyncio.ensure_future(load_thread(fetchMessage))
-    resultsDict = scraper(num, 'https://store.steampowered.com/search/?specials=1/&cc=UK')
+    resultsDict = get_data(num, 'https://store.steampowered.com/search/?specials=1/&cc=UK')
     
     await fetchMessage.delete()
     await ctx.send('The latest sales on Steam are:')
@@ -132,7 +132,7 @@ async def search(ctx, num : int, *, term):
 
     fetchMessage = await ctx.send('Fetching data from Steam servers...')
     await asyncio.ensure_future(load_thread(fetchMessage))
-    resultsDict = scraper(num, f'https://store.steampowered.com/search/?term={term}&cc=UK')
+    resultsDict = get_data(num, f'https://store.steampowered.com/search/?term={term}&cc=UK')
 
     await fetchMessage.delete()
     await ctx.send('Your results are:')
