@@ -4,7 +4,12 @@ from discord import Intents
 import numpy as np
 from bs4 import BeautifulSoup
 from keep_alive import keep_alive
-import discord, os, asyncio, requests, math
+import discord, os, asyncio, requests, math, logging
+
+#---------------------------------------------------------#
+# error logging
+
+logging.basicConfig(filename="errorlog.log", filemode=logging.ERROR, force=True, format='%(asctime)s %(levelname)s %(error)s %(level)s')
 
 #---------------------------------------------------------#
 # web scraper
@@ -93,16 +98,19 @@ async def sales(ctx, num : int = 20):
     await client.change_presence(status=discord.Status.online)
     fetchMessage = await ctx.send('Fetching data from Steam servers...')
     await asyncio.ensure_future(load_thread(fetchMessage))
-    resultsDict = get_data(num, 'https://store.steampowered.com/search/?specials=1/&cc=UK')
-    
+    try:  
+      resultsDict = get_data(num, 'https://store.steampowered.com/search/?specials=1/&cc=UK')
+    except Exception as e:
+      logging.error(e)
+      return await ctx.send("**There was an error fetching the data**")
     await fetchMessage.delete()
     await ctx.send('The latest sales on Steam are:')
     
     messageLineList = list()
-    messageLineList.append('`{:<90} {:<15} {:<25} {:<10}`\n'.format(*resultsDict.keys()))
+    messageLineList.append('`{:<92} {:<15} {:<25} {:<10}`\n'.format(*resultsDict.keys()))
 
     for row in range(0,len(resultsDict['Products'])):
-      messageLineList.append('`{:<90} {:<15} {:<25} {:<10}`\n'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
+      messageLineList.append('`{:<92} {:<15} {:<25} {:<10}`\n'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
 
     noOfMessages = math.ceil(sum(len(line) for line in messageLineList)/2000)
 
@@ -138,10 +146,10 @@ async def search(ctx, num : int, *, term):
     await ctx.send('Your results are:')
 
     messageLineList = list()
-    messageLineList.append('`{:<90} {:<15} {:<25} {:<10}`\n'.format(*resultsDict.keys()))
+    messageLineList.append('`{:<92} {:<15} {:<25} {:<10}`\n'.format(*resultsDict.keys()))
 
     for row in range(0,len(resultsDict['Products'])):
-      messageLineList.append('`{:<90} {:<15} {:<25} {:<10}`\n'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
+      messageLineList.append('`{:<92} {:<15} {:<25} {:<10}`\n'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
 
     noOfMessages = math.ceil(sum(len(line) for line in messageLineList)/2000)
 
