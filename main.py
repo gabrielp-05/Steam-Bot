@@ -9,7 +9,7 @@ import discord, os, asyncio, requests, math, logging
 #---------------------------------------------------------#
 # error logging
 
-logging.basicConfig(filename="errorlog.log", filemode=logging.ERROR, force=True, format='%(asctime)s %(levelname)s %(error)s %(level)s')
+logging.basicConfig(filename="errorlog.log", level=logging.ERROR, force=True, format='%(asctime)s %(levelname)s %(error)s %(level)s')
 
 #---------------------------------------------------------#
 # web scraper
