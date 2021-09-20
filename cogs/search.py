@@ -22,7 +22,7 @@ class Search(commands.Cog):
             # replacing spaces with +s so the url can be displayed correctly in Discord
             term = term.replace(' ', '+')
 
-            fetchMessage = await ctx.send('`Fetching data from Steam servers...`')
+            fetchMessage = await ctx.send('`Fetching data from Steam servers`')
             await asyncio.ensure_future(load_thread(fetchMessage))
             resultsDict = get_data(num, f'https://store.steampowered.com/search/?term={term}&cc=UK')
 

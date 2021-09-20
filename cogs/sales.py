@@ -19,7 +19,7 @@ class Sales(commands.Cog):
 
         if isinstance(num, int) and num in range(1, 51):
             await self.bot.change_presence(status=discord.Status.online)
-            fetchMessage = await ctx.send('`Fetching data from Steam servers...`')
+            fetchMessage = await ctx.send('`Fetching data from Steam servers`')
             await asyncio.ensure_future(load_thread(fetchMessage))
             try:
                 resultsDict = get_data(num, 'https://store.steampowered.com/search/?specials=1/&cc=UK')
