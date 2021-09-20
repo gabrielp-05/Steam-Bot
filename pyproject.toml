@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "repl_python3_Steam-Bot"
+version = "0.1.0"
+description = ""
+authors = ["repl.it user <replituser@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Flask = "^2.0.1"
+"discord.py" = "^1.7.3"
+beautifulsoup4 = "^4.9.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
