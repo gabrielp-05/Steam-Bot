@@ -33,7 +33,7 @@ class Sales(commands.Cog):
             messageLineList.append('`{:<92} {:<15} {:<25} {:<10}`\n'.format(*resultsDict.keys()))
 
             for row in range(0, len(resultsDict['Products'])):
-                messageLineList.append('`{:<92} {:<15} {:<25} {:<10}`\n'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Releases'][row], resultsDict['Discounts'][row]))
+                messageLineList.append('`{:<92} {:<15} {:<25} {:<10}`\n'.format(resultsDict['Products'][row], resultsDict['Prices'][row], resultsDict['Released'][row], resultsDict['Discounts'][row]))
 
             noOfMessages = math.ceil(sum(len(line) for line in messageLineList)/2000)
 
