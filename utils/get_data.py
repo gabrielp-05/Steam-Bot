@@ -36,6 +36,6 @@ def get_data(num, page) -> dict:
         if len(prices) == num:
             break
 
-    resultsDict = {'Products':products, 'Prices':prices, 'Releases':releases, 'Discounts':discounts}
+    resultsDict = {'Products':products, 'Prices':prices, 'Released':releases, 'Discounts':discounts}
 
     return resultsDict
