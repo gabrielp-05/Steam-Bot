@@ -3,11 +3,7 @@ import requests
 
 
 def get_data(num, page) -> dict:
-
-    """
-    When a valid URL is passed in, it fetches the source of the page and parses it to retrieve the items.
-    """
-
+    """ When a valid URL is passed in, it fetches the source of the page and parses it to retrieve the items."""
     products = []
     releases = []
     discounts = []
