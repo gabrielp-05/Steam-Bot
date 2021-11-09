@@ -5,8 +5,7 @@ import requests
 def get_data(num, page) -> dict:
 
     """
-    When a valid URL is passed in, it opens that page in the Selenium Chromedriver and
-    fetches all results in a given range which can be changed
+    When a valid URL is passed in, it fetches the source of the page and parses it to retrieve the items.
     """
 
     products = []
